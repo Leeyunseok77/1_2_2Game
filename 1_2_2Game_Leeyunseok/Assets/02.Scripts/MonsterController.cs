@@ -5,11 +5,15 @@ using UnityEngine;
 public class MonsterController : MonoBehaviour
 {
     public float moveSpeed = 5.0f; // 몬스터 이동 속도
+    public float knockbackForce = 10.0f; // 무기에 맞았을 때 튕겨져 나가는 힘
 
     private void Start()
     {
         // 몬스터가 생성될 때마다 플레이어 방향으로 직선 이동하도록 설정
         MoveInPlayerDirection();
+
+        // 5초 후에 DestroyMonster 함수 호출
+        Invoke("DestroyMonster", 2.0f);
     }
 
     void MoveInPlayerDirection()
@@ -35,6 +39,41 @@ public class MonsterController : MonoBehaviour
         else
         {
             Debug.LogWarning("Player not found!");
+        }
+    }
+
+    // 몬스터를 파괴하는 함수
+    void DestroyMonster()
+    {
+        // 5초 후에 호출되어 몬스터 오브젝트를 삭제
+        Destroy(gameObject);
+    }
+
+    // 충돌이 감지될 때 호출되는 콜백 함수
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Monster Collision with Player!");
+
+            // 플레이어와 충돌하면 몬스터 오브젝트를 삭제
+            Destroy(gameObject);
+        }
+        else if (other.CompareTag("Weapon"))
+        {
+            Debug.Log("Monster Collision with Weapon!");
+
+            // 무기와 충돌하면 몬스터를 튕겨나가게 함
+            Rigidbody monsterRigidbody = GetComponent<Rigidbody>();
+            if (monsterRigidbody != null)
+            {
+                // 무기의 방향으로 힘을 가함
+                Vector3 weaponDirection = (other.transform.position - transform.position).normalized;
+                monsterRigidbody.AddForce(weaponDirection * knockbackForce, ForceMode.Impulse);
+            }
+
+            // 몬스터 오브젝트를 삭제
+            Destroy(gameObject);
         }
     }
 }
