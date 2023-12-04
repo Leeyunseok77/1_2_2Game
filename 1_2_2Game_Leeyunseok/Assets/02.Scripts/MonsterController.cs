@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MonsterController : MonoBehaviour
 {
     public float moveSpeed = 5.0f; // 몬스터 이동 속도
     public float knockbackForce = 10.0f; // 무기에 맞았을 때 튕겨져 나가는 힘
+
+    // 몬스터가 사라질 때 호출될 이벤트
+    public UnityEvent OnMonsterDisappear = new UnityEvent();
 
     private void Start()
     {
@@ -13,7 +17,7 @@ public class MonsterController : MonoBehaviour
         MoveInPlayerDirection();
 
         // 5초 후에 DestroyMonster 함수 호출
-        Invoke("DestroyMonster", 2.0f);
+        Invoke("DestroyMonster", 3.0f);
     }
 
     void MoveInPlayerDirection()
@@ -42,9 +46,11 @@ public class MonsterController : MonoBehaviour
         }
     }
 
-    // 몬스터를 파괴하는 함수
     void DestroyMonster()
     {
+        // 이벤트 호출
+        OnMonsterDisappear.Invoke();
+
         // 5초 후에 호출되어 몬스터 오브젝트를 삭제
         Destroy(gameObject);
     }
@@ -56,8 +62,8 @@ public class MonsterController : MonoBehaviour
         {
             Debug.Log("Monster Collision with Player!");
 
-            // 플레이어와 충돌하면 몬스터 오브젝트를 삭제
-            Destroy(gameObject);
+            // 몬스터 오브젝트를 삭제
+            DestroyMonster();
         }
         else if (other.CompareTag("Weapon"))
         {
@@ -71,9 +77,6 @@ public class MonsterController : MonoBehaviour
                 Vector3 weaponDirection = (other.transform.position - transform.position).normalized;
                 monsterRigidbody.AddForce(weaponDirection * knockbackForce, ForceMode.Impulse);
             }
-
-            // 몬스터 오브젝트를 삭제
-            Destroy(gameObject);
         }
     }
 }
