@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: aiStandardSurface5
+  m_Name: aiStandardSurface15
   m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
   m_ValidKeywords:
   - _EMISSION
@@ -70,7 +70,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.2
     - _GlossyReflections: 1
-    - _Metallic: 0.528
+    - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
@@ -80,6 +80,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.9706, b: 0, a: 1}
-    - _EmissionColor: {r: 2.8609092, g: 2.1580284, b: 0.79619646, a: 1}
+    - _Color: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
+    - _EmissionColor: {r: 4, g: 1.5058824, b: 1.5058824, a: 1}
   m_BuildTextureStacks: []
